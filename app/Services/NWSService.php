@@ -15,13 +15,13 @@ class NWSService
      * @return array
      * @throws GuzzleException
      */
-    public function getPointMetaData(float $lat, float $lng): array
+    public function getPointMetaData(float $pointX, float $pointY): array
     {
-        $url = self::BASE_URL . "$lat,$lng";
+        $url = self::BASE_URL . "$pointX,$pointY";
         $data = $this->sendRequest($url);
         return array_merge([
-            'lat' => $lat,
-            'lng' => $lng,
+            'point_x' => $pointX,
+            'point_y' => $pointY,
         ], $this->parsePointMetaData($data));
     }
 

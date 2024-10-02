@@ -18,8 +18,8 @@ class Location extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'lat',
-        'lng',
+        'point_x',
+        'point_y',
         'daily_forecast_url',
         'hourly_forecast_url',
         'meta_data',
@@ -31,8 +31,8 @@ class Location extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'lat' => 'double',
-        'lng' => 'double',
+        'point_x' => 'double',
+        'point_y' => 'double',
         'daily_forecast_url' => 'url',
         'hourly_forecast_url' => 'url',
         'meta_data' => 'array',

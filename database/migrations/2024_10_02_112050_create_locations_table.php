@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->string('name')->nullable(false);
-            $table->double('lat')->nullable(false);
-            $table->double('lng')->nullable(false);
+            $table->double('point_x')->nullable(false);
+            $table->double('point_y')->nullable(false);
             $table->string('daily_forecast_url');
             $table->string('hourly_forecast_url');
             $table->json('meta_data');
