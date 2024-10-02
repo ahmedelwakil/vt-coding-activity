@@ -1,0 +1,40 @@
+version: '3'
+volumes:
+  db-data:
+
+services:
+  vt-app:
+    build: .
+    restart: always
+    container_name: vt-app
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - 9000:80
+    depends_on:
+      - vt-mysql
+
+  vt-mysql:
+    image: mysql:8.0.29
+    restart: always
+    container_name: vt-mysql
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - 8090:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_HOST=vt-mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=vt
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - 8080:8080
+    depends_on:
+      - vt-mysql
+    environment:
+      - PMA_HOST=vt-mysql
