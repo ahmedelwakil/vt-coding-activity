@@ -40,6 +40,9 @@ RUN touch /var/run/supervisor.sock
 RUN chmod 777 /var/run/supervisor.sock
 RUN chmod 777 -R /usr/lib/python3/dist-packages/supervisor/
 
+#Install npm
+RUN apt-get install npm -y
+
 #add run.sh
 RUN chmod +x deploy-docker/run.sh
 RUN bash -c 'mkdir -p /var/www/html/storage/{logs,framework/sessions,framework/views,framework/cache,data}'
