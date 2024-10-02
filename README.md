@@ -1,6 +1,6 @@
 <h1 align="center">Virginia Tech (VT) <br> The Electronic Research Administration (ERA) <br> Coding Activity</h1>
 
-This project is based on the Laravel framework. Please refer to their website for any further information.
+<p align="center">This project is based on the Laravel framework. Please refer to their website for any further information.</p>
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
@@ -15,7 +15,7 @@ This project is based on the Laravel framework. Please refer to their website fo
 
 The project is based on Docker Compose. You can find the containers' configuration in the [docker-compose.yaml](/docker-compose.yaml).
 
-#### Containers Description
+#### - Containers Description
 
 The project consists of 3 main containers:
 1. **App Container**: This is the main server application which holds the business logic.
@@ -30,7 +30,7 @@ The project consists of 3 main containers:
 
 To access any of the containers run ```docker exec -it {container-name} bash```. Please refer to the [docker-compose.yaml](./docker-compose.yaml) file for all containers' configuration.
 
-#### How to Deploy Locally
+#### - How to Deploy Locally
 Steps on how to deploy (Make sure docker-compose is installed on your machine):
 - Clone project on your local machine
 - Open the command line and change the current directory to the project directory
