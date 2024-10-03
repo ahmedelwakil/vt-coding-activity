@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NWSException;
 use App\Models\Location;
 use App\Services\LocationService;
-use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class LocationController extends Controller
@@ -28,7 +29,7 @@ class LocationController extends Controller
 
     /**
      * @param Request $request
-     * @throws GuzzleException
+     * @return Application|Factory|View|RedirectResponse
      */
     public function store(Request $request)
     {
@@ -38,18 +39,25 @@ class LocationController extends Controller
             'point_y' => 'required|numeric',
         ]);
 
-        $location = $this->locationService->addLocation($request->name, $request->point_x, $request->point_y);
-
-        //TODO: redirect
+        try {
+            $location = $this->locationService->addLocation($request->name, $request->point_x, $request->point_y);
+        } catch (NWSException $exception) {
+            return redirect()->back()->withErrors($exception->getMessage());
+        }
+        return $this->show($location);
     }
 
     /**
      * @param Location $location
-     * @return Application|Factory|View
-     * @throws GuzzleException
+     * @return Application|Factory|View|RedirectResponse
      */
     public function show(Location $location)
     {
-        return view('locations.show', ['location' => $this->locationService->getLocationForecast($location)]);
+        try {
+            $location = $this->locationService->getLocationForecast($location);
+            return view('locations.show', ['location' => $location]);
+        } catch (NWSException $exception) {
+            return redirect()->back()->withErrors($exception->getMessage());
+        }
     }
 }

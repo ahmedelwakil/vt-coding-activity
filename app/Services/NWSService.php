@@ -10,26 +10,61 @@ class NWSService
     const BASE_URL = 'https://api.weather.gov/points/';
 
     /**
-     * @param float $lat
-     * @param float $lng
+     * @param float $pointX
+     * @param float $pointY
      * @return array
-     * @throws GuzzleException
      */
-    public function getPointMetaData(float $pointX, float $pointY): array
+    public static function getPointMetaData(float $pointX, float $pointY): array
     {
         $url = self::BASE_URL . "$pointX,$pointY";
-        $data = $this->sendRequest($url);
-        return array_merge([
-            'point_x' => $pointX,
-            'point_y' => $pointY,
-        ], $this->parsePointMetaData($data));
+        $response = self::sendRequest($url);
+        if ($response['success'])
+            $response['data'] = self::parsePointMetaData($response['data']);
+
+        return $response;
+    }
+
+    /**
+     * @param string $url
+     * @return array
+     */
+    public static function getForecast(string $url): array
+    {
+        $response = self::sendRequest($url);
+        if ($response['success'])
+            $response['data'] = self::parseForecastMetaData($response['data']);
+
+        return $response;
+    }
+
+    /**
+     * @param $url
+     * @return array
+     */
+    private static function sendRequest($url): array
+    {
+        $client = new Client();
+        try {
+            $response = $client->get($url, ['User-Agent' => env('APP_NAME', 'myweatherapp.com')])->getBody()->getContents();
+            return [
+                'success' => true,
+                'data' => json_decode($response, true),
+            ];
+        } catch (GuzzleException $exception) {
+            $response = $exception->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            return [
+                'success' => false,
+                'data' => json_decode($responseBodyAsString, true),
+            ];
+        }
     }
 
     /**
      * @param array $metaData
      * @return array
      */
-    private function parsePointMetaData(array $metaData): array
+    private static function parsePointMetaData(array $metaData): array
     {
         return [
             'daily_forecast_url' => $metaData['properties']['forecast'],
@@ -39,29 +74,24 @@ class NWSService
     }
 
     /**
-     * @param string $url
+     * @param array $metaData
      * @return array
-     * @throws GuzzleException
      */
-    public function getForecast(string $url): array
+    private static function parseForecastMetaData(array $metaData): array
     {
-        $data = $this->sendRequest($url);
         return [
-            'generated_at' => $data['properties']['generatedAt'],
-            'last_updated_at' => $data['properties']['updateTime'],
-            'periods' => $data['properties']['periods'],
+            'generated_at' => $metaData['properties']['generatedAt'],
+            'last_updated_at' => $metaData['properties']['updateTime'],
+            'periods' => $metaData['properties']['periods'],
         ];
     }
 
     /**
-     * @param $url
-     * @return mixed
-     * @throws GuzzleException
+     * @param array $exceptionData
+     * @return string
      */
-    private function sendRequest($url)
+    public static function parseExceptionMessage(array $exceptionData): string
     {
-        $client = new Client();
-        $response = $client->get($url, ['User-Agent' => env('APP_NAME', 'myweatherapp.com')])->getBody()->getContents();
-        return json_decode($response, true);
+        return $exceptionData['title'] . '. ' . $exceptionData['detail'];
     }
 }

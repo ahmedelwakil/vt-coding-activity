@@ -28,7 +28,7 @@ class DashboardController extends Controller
      */
     public function __invoke()
     {
-        $locations = $this->locationService->getLocations();
+        $locations = $this->locationService->getAllLocations();
         return view('dashboard', ['locations' => $locations]);
     }
 }
