@@ -27,22 +27,22 @@
 
                                 <div class="mt-4 flex w-full justify-between">
                                     <div class="block mt-1" style="width: 40%">
-                                        <x-input-label for="pointX" :value="__('Point X')" />
-                                        <x-text-input id="pointX" class="mt-1 w-full mx-2"
+                                        <x-input-label for="point_x" :value="__('Point X')" />
+                                        <x-text-input id="point_x" class="mt-1 w-full mx-2"
                                                       type="number"
-                                                      name="pointX"
+                                                      name="point_x"
                                                       step="any"
                                                       required autocomplete="Point X" />
-                                        <x-input-error :messages="$errors->get('pointX')" class="mt-2" />
+                                        <x-input-error :messages="$errors->get('point_x')" class="mt-2" />
                                     </div>
                                     <div class="block mt-1" style="width: 40%">
-                                        <x-input-label for="pointY" :value="__('Point Y')" />
-                                        <x-text-input id="pointY" class="mt-1 w-full mx-2"
+                                        <x-input-label for="point_y" :value="__('Point Y')" />
+                                        <x-text-input id="point_y" class="mt-1 w-full mx-2"
                                                       type="number"
-                                                      name="pointY"
+                                                      name="point_y"
                                                       step="any"
                                                       required autocomplete="Point Y" />
-                                        <x-input-error :messages="$errors->get('pointY')" class="mt-2" />
+                                        <x-input-error :messages="$errors->get('point_y')" class="mt-2" />
                                     </div>
                                 </div>
 
@@ -66,6 +66,37 @@
                     </h2>
 
                     <div class="mt-4 w-full">
+                        @if(!empty($locations))
+                            <table class="w-full">
+                                <thead class="py-2 bg-gray-900">
+                                    <td class="text-center dark:text-gray-300 font-semibold text-gray-700 text-lg">#</td>
+                                    <td class="text-center dark:text-gray-300 font-semibold text-gray-700 text-lg">Name</td>
+                                    <td class="text-center dark:text-gray-300 font-semibold text-gray-700 text-lg">Point X</td>
+                                    <td class="text-center dark:text-gray-300 font-semibold text-gray-700 text-lg">Point Y</td>
+                                    <td class="text-center dark:text-gray-300 font-semibold text-gray-700 text-lg">Actions</td>
+                                </thead>
+                                <tbody>
+                                    @foreach($locations as $location)
+                                        <tr class="py-2">
+                                            <td class="text-center dark:text-gray-300 font-medium text-gray-700 text-lg">{{ $location->id }}</td>
+                                            <td class="text-center dark:text-gray-300 font-medium text-gray-700 text-lg">{{ $location->name }}</td>
+                                            <td class="text-center dark:text-gray-300 font-medium text-gray-700 text-lg">{{ $location->point_x }}</td>
+                                            <td class="text-center dark:text-gray-300 font-medium text-gray-700 text-lg">{{ $location->point_y }}</td>
+                                            <td class="flex py-2">
+                                                <div class="gap-4 mx-auto">
+                                                    <x-secondary-button>{{ __('Show') }}</x-secondary-button>
+                                                </div>
+
+                                                <div class="gap-4 mx-auto">
+                                                    <x-danger-button>{{ __('Delete') }}</x-danger-button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                        @endif
                     </div>
                 </div>
             </div>

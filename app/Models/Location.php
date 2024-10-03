@@ -33,8 +33,6 @@ class Location extends Model
     protected $casts = [
         'point_x' => 'double',
         'point_y' => 'double',
-        'daily_forecast_url' => 'url',
-        'hourly_forecast_url' => 'url',
         'meta_data' => 'array',
     ];
 
