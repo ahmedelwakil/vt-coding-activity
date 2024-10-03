@@ -36,4 +36,24 @@ class LocationService
             'user_id' => Auth::user()->getAuthIdentifier()
         ], $locationData));
     }
+
+    /**
+     * @param Location $location
+     * @return Location
+     * @throws GuzzleException
+     */
+    public function getLocationForecast(Location $location)
+    {
+        $nwsService = new NWSService();
+        $dailyForecastData = $nwsService->getForecast($location->daily_forecast_url);
+//        $hourlyForecastData = $nwsService->getForecast($location->hourly_forecast_url);
+
+        $location->setAttribute('daily_forecast_data', $dailyForecastData);
+        $location->append([
+            'daily_forecast_data' => $dailyForecastData,
+//            'hourly_forecast_data' => $hourlyForecastData,
+        ]);
+
+        return $location;
+    }
 }

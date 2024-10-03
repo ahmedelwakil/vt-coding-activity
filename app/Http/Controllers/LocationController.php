@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Location;
 use App\Services\LocationService;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class LocationController extends Controller
@@ -37,5 +41,15 @@ class LocationController extends Controller
         $location = $this->locationService->addLocation($request->name, $request->point_x, $request->point_y);
 
         //TODO: redirect
+    }
+
+    /**
+     * @param Location $location
+     * @return Application|Factory|View
+     * @throws GuzzleException
+     */
+    public function show(Location $location)
+    {
+        return view('locations.show', ['location' => $this->locationService->getLocationForecast($location)]);
     }
 }
