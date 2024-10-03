@@ -90,7 +90,11 @@
                                                     </form>
                                                 </div>
                                                 <div class="mx-auto">
-                                                    <x-danger-button>{{ __('Delete') }}</x-danger-button>
+                                                    <form method="POST" action="{{ route('locations.destroy', $location->id) }}">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <x-danger-button>{{ __('Delete') }}</x-danger-button>
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>
@@ -105,4 +109,6 @@
             </div>
         </div>
     </div>
+
+
 </x-app-layout>

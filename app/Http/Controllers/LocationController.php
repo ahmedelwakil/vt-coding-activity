@@ -60,4 +60,14 @@ class LocationController extends Controller
             return redirect()->back()->withErrors($exception->getMessage());
         }
     }
+
+    /**
+     * @param Location $location
+     * @return RedirectResponse
+     */
+    public function destroy(Location $location)
+    {
+        $location->delete();
+        return redirect()->back();
+    }
 }

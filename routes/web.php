@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/locations', [LocationController::class, 'store'])->name('locations.store');
     Route::get('/locations/{location}', [LocationController::class, 'show'])->name('locations.show');
+    Route::delete('/locations/{location}', [LocationController::class, 'destroy'])->name('locations.destroy');
 });
 
 require __DIR__.'/auth.php';
