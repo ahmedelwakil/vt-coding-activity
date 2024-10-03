@@ -19,12 +19,12 @@
         <div class="flex mt-1">
             <div class="flex mx-2">
                 <div class="text-sm font-semibold text-gray-600 dark:text-gray-400">{{ __("Created At") }}:&nbsp;</div>
-                <div class="text-sm font-medium text-indigo-700 dark:text-indigo-300">{{ \Carbon\Carbon::make($location->created_at)->format('Y-m-d h:m a') }}</div>
+                <div class="text-sm font-medium text-indigo-700 dark:text-indigo-300">{{ \Carbon\Carbon::make($location->created_at)->timezone('CDT')->format('Y-m-d h:m a') }}</div>
             </div>
 
             <div class="flex mx-2">
                 <div class="text-sm font-semibold text-gray-600 dark:text-gray-400">{{ __("Updated At") }}:&nbsp;</div>
-                <div class="text-sm font-medium text-indigo-700 dark:text-indigo-300">{{ \Carbon\Carbon::make($location->updated_at)->format('Y-m-d h:m a') }}</div>
+                <div class="text-sm font-medium text-indigo-700 dark:text-indigo-300">{{ \Carbon\Carbon::make($location->updated_at)->timezone('CDT')->format('Y-m-d h:m a') }}</div>
             </div>
         </div>
     </x-slot>
@@ -40,12 +40,12 @@
                     <div class="flex mt-1">
                         <div class="flex mx-2">
                             <div class="text-sm font-semibold text-gray-600 dark:text-gray-400">{{ __("Generated At") }}:&nbsp;</div>
-                            <div class="text-sm font-medium text-indigo-700 dark:text-indigo-300">{{ \Carbon\Carbon::make($location->daily_forecast_data['generated_at'])->format('Y-m-d h:m a') }}</div>
+                            <div class="text-sm font-medium text-indigo-700 dark:text-indigo-300">{{ \Carbon\Carbon::make($location->daily_forecast_data['generated_at'])->timezone('CDT')->format('Y-m-d h:m a') }}</div>
                         </div>
 
                         <div class="flex mx-2">
                             <div class="text-sm font-semibold text-gray-600 dark:text-gray-400">{{ __("Last Updated At") }}:&nbsp;</div>
-                            <div class="text-sm font-medium text-indigo-700 dark:text-indigo-300">{{ \Carbon\Carbon::make($location->daily_forecast_data['last_updated_at'])->format('Y-m-d h:m a') }}</div>
+                            <div class="text-sm font-medium text-indigo-700 dark:text-indigo-300">{{ \Carbon\Carbon::make($location->daily_forecast_data['last_updated_at'])->timezone('CDT')->format('Y-m-d h:m a') }}</div>
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
                         <div class="flex overflow-x-scroll pb-4 hide-scroll-bar">
                             <div class="flex">
                                 @foreach($location->daily_forecast_data['periods'] as $period)
-                                    @include('locations.partials.period', ['period' => $period])
+                                    @include('locations.partials.daily-period', ['period' => $period])
                                 @endforeach
                             </div>
                         </div>
@@ -71,7 +71,27 @@
                         {{ __('Hourly Forecast') }}
                     </h2>
 
+                    <div class="flex mt-1">
+                        <div class="flex mx-2">
+                            <div class="text-sm font-semibold text-gray-600 dark:text-gray-400">{{ __("Generated At") }}:&nbsp;</div>
+                            <div class="text-sm font-medium text-indigo-700 dark:text-indigo-300">{{ \Carbon\Carbon::make($location->hourly_forecast_data['generated_at'])->timezone('CDT')->format('Y-m-d h:m a') }}</div>
+                        </div>
 
+                        <div class="flex mx-2">
+                            <div class="text-sm font-semibold text-gray-600 dark:text-gray-400">{{ __("Last Updated At") }}:&nbsp;</div>
+                            <div class="text-sm font-medium text-indigo-700 dark:text-indigo-300">{{ \Carbon\Carbon::make($location->hourly_forecast_data['last_updated_at'])->timezone('CDT')->format('Y-m-d h:m a') }}</div>
+                        </div>
+                    </div>
+
+                    <div class="m-auto p-auto mt-4">
+                        <div class="flex overflow-x-scroll pb-4 hide-scroll-bar">
+                            <div class="flex">
+                                @foreach($location->hourly_forecast_data['periods'] as $period)
+                                    @include('locations.partials.hourly-period', ['period' => $period])
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -50,13 +50,16 @@ class LocationService
      */
     public function getLocationForecast(Location $location)
     {
-        $response = NWSService::getForecast($location->daily_forecast_url);
-//        $hourlyForecastData = $nwsService->getForecast($location->hourly_forecast_url);
-        if ($response['success']) {
-            $location->setAttribute('daily_forecast_data', $response['data']);
-            return $location;
-        } else {
-            throw new NWSException(NWSService::parseExceptionMessage($response['data']));
-        }
+        $dailyResponse = NWSService::getForecast($location->daily_forecast_url);
+        if (!$dailyResponse['success'])
+            throw new NWSException(NWSService::parseExceptionMessage($dailyResponse['data']));
+
+        $hourlyResponse = NWSService::getForecast($location->hourly_forecast_url);
+        if (!$hourlyResponse['success'])
+            throw new NWSException(NWSService::parseExceptionMessage($hourlyResponse['data']));
+
+        $location->setAttribute('daily_forecast_data', $dailyResponse['data']);
+        $location->setAttribute('hourly_forecast_data', $hourlyResponse['data']);
+        return $location;
     }
 }
